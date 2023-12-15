@@ -19,6 +19,19 @@ class _UpdateCardScreenState extends State<UpdateCardScreen> {
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<CardsCubit>(context).emitUpdateCard(Cards(
+                name: "${_textFieldControllerName.text}",
+                email: "${_textFieldControllerContent.text}",
+                gender: "Male",
+                status: "Active"),
+                widget.oldCard.id!
+                );
+  }
+    @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    BlocProvider.of<CardsCubit>(context).close();
   }
   Widget bulidBlocWidget()
   {
@@ -100,15 +113,7 @@ class _UpdateCardScreenState extends State<UpdateCardScreen> {
           ),
           onPressed: () {
             if (_formKey.currentState!.validate()) {
-              BlocProvider.of<CardsCubit>(context).emitUpdateCard(Cards(
-                name: "${_textFieldControllerName.text}",
-                email: "${_textFieldControllerContent.text}",
-                gender: "Male",
-                status: "Active"),
-                widget.oldCard.id!
-                );
-              // Do something with the form data
-              
+              // Do something with the form dat
               print('Text name: ${_textFieldControllerName.text} Text content : ${_textFieldControllerContent.text}');
             }
           },

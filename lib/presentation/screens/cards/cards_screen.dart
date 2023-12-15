@@ -24,6 +24,12 @@ class _CardsScreenState extends State<CardsScreen> {
     super.initState();
     BlocProvider.of<CardsCubit>(context).getAllCards();
   }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    BlocProvider.of<CardsCubit>(context).close();
+  }
   Widget buildBlocWidget(){
   return BlocBuilder<CardsCubit,CardsState>(builder: (context,state)
   {
