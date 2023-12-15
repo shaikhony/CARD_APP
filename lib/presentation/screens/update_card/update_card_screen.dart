@@ -27,12 +27,6 @@ class _UpdateCardScreenState extends State<UpdateCardScreen> {
                 widget.oldCard.id!
                 );
   }
-    @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    BlocProvider.of<CardsCubit>(context).close();
-  }
   Widget bulidBlocWidget()
   {
     return BlocBuilder<CardsCubit,CardsState>(
@@ -113,6 +107,7 @@ class _UpdateCardScreenState extends State<UpdateCardScreen> {
           ),
           onPressed: () {
             if (_formKey.currentState!.validate()) {
+              bulidBlocWidget();
               // Do something with the form dat
               print('Text name: ${_textFieldControllerName.text} Text content : ${_textFieldControllerContent.text}');
             }

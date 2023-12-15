@@ -68,7 +68,7 @@ class CustomTexts extends StatelessWidget {
   }
 }
 
-class CustomButtons extends StatelessWidget {
+class CustomButtons extends StatefulWidget {
   const CustomButtons({
     super.key,
     required this.width,
@@ -81,25 +81,57 @@ class CustomButtons extends StatelessWidget {
   final Cards myCardD;
 
   @override
+  State<CustomButtons> createState() => _CustomButtonsState();
+}
+
+class _CustomButtonsState extends State<CustomButtons> {
+
+    @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<CardsCubit>(context).emitDeleteCard(widget.myCardD.id!);
+  }
+  Widget bulidBlocWidget()
+  {
+    return BlocBuilder<CardsCubit,CardsState>(
+    builder: (context,state)
+    {
+      if (state is DeleteCard){
+        return Center(child: Text('yessssss')) ;
+      }else{
+        return showLoadingIndicator();
+      }
+    }
+    );
+  }
+  Widget showLoadingIndicator()
+  {
+    return const Center(
+      child: CircularProgressIndicator(
+        color: MyColors.myFeathery,
+      ),
+    );
+  }
+  @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
       Container(
-        width: width*.2,
-        height: height*.1/2,
+        width: widget.width*.2,
+        height: widget.height*.1/2,
         child: MaterialButton(onPressed: (){
           Navigator.push(context,
-          MaterialPageRoute(builder: ((context) => UpdateCardScreen(oldCard: myCardD,))));
+          MaterialPageRoute(builder: ((context) => UpdateCardScreen(oldCard: widget.myCardD,))));
         },
         child: Text('تعديل',style: Styles.textStyle14,),
         color: MyColors.myFeathery,
         ),
       ),
-      SizedBox(width: width*.1/3,),
+      SizedBox(width: widget.width*.1/3,),
       Container(
-        width: width*.2,
-        height: height*.1/2,
+        width: widget.width*.2,
+        height: widget.height*.1/2,
         child: MaterialButton(onPressed: (){
           showDialog(
             context: context,
@@ -108,15 +140,7 @@ class CustomButtons extends StatelessWidget {
               content: const Text('هل تريد حذف هذه البطاقة بالفعل؟'),
               actions: [
                 ElevatedButton(onPressed: (){
-                  BlocProvider.of<CardsCubit>(context).emitDeleteCard(myCardD.id!);
-                  BlocBuilder<CardsCubit,CardsState>(builder: (context,state){
-                    if(state is CardsLoaded)
-                      {
-                        return const Text('تم الحذف');
-                      }else {
-                        throw Exception('Failed to delete card');
-                      }
-                  });
+                      bulidBlocWidget();
                 }, child: const Text('نعم',style: Styles.textStyle14,)),
                 ElevatedButton(onPressed: (){
                   GoRouter.of(context).pop();}, child: const Text('لا',style: Styles.textStyle14,)),
