@@ -15,7 +15,7 @@ class CustomBodyCards extends StatelessWidget {
       shrinkWrap: true,
       physics: const ClampingScrollPhysics(),
       padding: const EdgeInsets.all(2),
-      itemCount: 10,
+      itemCount: myCards.length,
       itemBuilder: ((context, index) {
       return CustomCard(myCard: myCards[index],);
     }) );
